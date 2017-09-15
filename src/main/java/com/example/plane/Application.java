@@ -23,50 +23,22 @@ public class Application {
         Scanner input = new Scanner(System.in);
         
         Application application = new Application();
+        
+        
         SeatLayout seatLayout = application.designPlaneSeatLayout(input);
         List<SeatLayoutGroup> setLayoutGroups = application.groupingPlaneSeatLayout(input, seatLayout);
-        List<Seat> seats = application.designPlaneSeats(seatLayout, setLayoutGroups);
+        Seat[][] seats = application.designPlaneSeats(seatLayout, setLayoutGroups);
         
         System.out.println(" <======= Available seats ========>" +seats);
-        for(Seat seat: seats) {
-             System.out.println(seat.getName() + " ");
-//            for (int i = 0; i < seatLayout.getRows(); i++) {
-//                for (int j = 0; j < seatLayout.getColumns(); j++) {
-//                    
-//                    System.out.println(seat.getName() + " ");
-//                }
-//                System.out.println("/n");
-//            }
+
+        for (int i = 0; i < seatLayout.getRows(); i++) {
+            for (int j = 0; j < seatLayout.getColumns(); j++) {
+
+                System.out.print(seats[i] [j].getName() + " ");
+            }
+            System.out.println("\n");
         }
-       
-        
-//        System.out.println(" <======== Design your plane layout  =========>");
-//        System.out.println("Enter the total number of rows in layout : ");
-//        int rows = input.nextInt();
-//        System.out.println("Enter the total number of columns in layout : ");
-//        int columns = input.nextInt();
-//        System.out.println("rows:" + rows +" : Columns: " + columns);
-//        
-//        SeatLayout seatLayout = new SeatLayout();
-//        seatLayout.setName("Plane1 layout");
-//        seatLayout.setRows(rows);
-//        seatLayout.setColumns(columns);
-//        
-//        System.out.println("Group your seat layout: ");
-//        System.out.println("Enter the total number of groups in layout : ");
-//        int numberOfgroups = input.nextInt();
-//        
-//        List<SeatLayoutGroup> seatLayoutGroups = new ArrayList<SeatLayoutGroup>();
-//        for(int i = 0; i < numberOfgroups; i++) {
-//            System.out.println("Enter the group  " + i + " columns :");
-//            int numberOfColumns = input.nextInt();
-//            SeatLayoutGroup seatLayoutGroup = new SeatLayoutGroup();
-//            seatLayoutGroup.setName("Group"+i);
-//            seatLayoutGroup.setNumberOfColumns(numberOfColumns);
-//            seatLayoutGroup.setSeatLayout(seatLayout);
-//            seatLayoutGroups.add(seatLayoutGroup);
-//        }
-//        System.out.println("Enter the total number of groups in layout : ");
+
     }
     
     /**
@@ -121,20 +93,22 @@ public class Application {
      * @param seatLayoutGroups the seat layout groups.
      * @return the designPlaneSeats.
      */
-    private List<Seat> designPlaneSeats(SeatLayout seatLayout, List<SeatLayoutGroup> seatLayoutGroups) {
-        List<Seat> seats = new ArrayList<Seat>();
+    private Seat[][] designPlaneSeats(SeatLayout seatLayout, List<SeatLayoutGroup> seatLayoutGroups) {
+        int rows = seatLayout.getRows();
+        int columns = seatLayout.getColumns();
+        Seat[][] seats = new Seat[rows][columns];
         
-        for(int i = 1; i < seatLayout.getRows() + 1; i++) {
+        for(int i = 0; i < seatLayout.getRows(); i++) {
             char c = 'A';
             for(int j = 0; j < seatLayout.getColumns(); j++) {
                 Seat seat = new Seat();
-                String name = String.valueOf(i) + String.valueOf(c);
+                String name = String.valueOf(i+1) + String.valueOf(c);
                 c++;
                 seat.setName(name);
                 seat.setRowNumber(i);
                 seat.setColumnNumber(j);
                 seat.setIsFilled(false);
-                seats.add(seat);
+                seats[i][j] = seat;
             }
             
         }
