@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.plane1;
+package com.example.plane;
 
 import com.example.plane.domain.Seat;
 import com.example.plane.domain.SeatLayout;
