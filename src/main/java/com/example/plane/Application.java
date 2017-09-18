@@ -10,10 +10,12 @@ import com.example.plane.domain.SeatLayout;
 import com.example.plane.domain.LayoutGroup;
 import com.example.plane.domain.SeatLayoutGroup;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import javafx.print.Collation;
 
@@ -37,9 +39,46 @@ public class Application {
         //To print the seat
         application.printSeat(seatLayout, seats, layoutGroups);
         
-//        System.out.println(" <====== Select seat ====> ");
-//        System.out.println("Enter seat count : ");
-//        int seatCount = input.nextInt();
+
+        List<Seat> planSeats = Arrays.stream(seats) //'array' is two-dimensional
+                .flatMap(Arrays::stream)
+                .collect(Collectors.toList());
+        List<Seat> availableSeats = planSeats.stream()
+                    .filter(seat -> seat.isIsFilled() == false).collect(Collectors.toList());
+        System.out.println("planSeats: "+planSeats.size());
+        System.out.println(" <====== Available seats ====> ");
+        
+        System.out.println(" <====== Select seat ====> ");
+        System.out.println("Enter seat count : ");
+        int seatCount = input.nextInt();
+
+        List<SeatLayoutGroup> matchedSeatLayoutGroups = seatLayoutGroups.stream()
+                .filter(seatLayoutGroup -> seatCount <= seatLayoutGroup.getLayoutGroup().getNumberOfColumns() && seatLayoutGroup.getSeat().isIsFilled() == false)
+//                .map(SeatLayoutGroup::getSeat)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+                planSeats = planSeats.stream()
+                        .map(seat -> {
+                            System.out.println("seatCount: "+seatCount);
+                            System.out.println("seatCount: "+seat.getName());
+                            for(int i= 0; i <  seatCount; i++) {
+                                System.out.println("applay");
+                                seat.setName("XX");
+                                seat.setIsFilled(true);  
+                            }
+                            return seat;
+                                }).collect(Collectors.toList());
+                
+                System.out.println("planSeats: "+planSeats.size());
+//                Seat[][] updateSeats = planSeats.stream()
+//                        .toArray(Seat[][]::new);
+               for(Seat seat: planSeats) {
+                   System.out.println("seat: "+seat.getName());
+                   System.out.println("isfilled: "+seat.isIsFilled());
+               } 
+                
+                //To print the seat
+//        application.printSeat(seatLayout, updateSeats, layoutGroups);
 
     }
     
