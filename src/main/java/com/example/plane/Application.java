@@ -34,36 +34,8 @@ public class Application {
         Seat[][] seats = application.designPlaneSeats(seatLayout, layoutGroups);
         List<SeatLayoutGroup> seatLayoutGroups = application.seatGrouping(seatLayout, layoutGroups, seats);
 
-        
-        System.out.println(" <======= Available seats ========>" );
-
-        for (int i = 0; i <  seatLayout.getRows(); i++) {
-            for (int j = 0; j < seatLayout.getColumns(); j++) {
-
-                System.out.print(seats[i] [j].getName() + " ");
-            }
-            System.out.println("\n");
-        }
-
-        System.out.println(" <======= Available seats by group ========>" );
-        
-        for(int i = 0; i < seatLayout.getRows(); i++) {
-
-            int index = 0;
-            int x = 1;
-            for(LayoutGroup layoutGroup: layoutGroups) {
-//                    System.out.print(layoutGroup.getName() + " ");
-                for(int j = index; j < index + layoutGroup.getNumberOfColumns(); j++) {
-                    System.out.print(seats[i] [j].getName() + " ");
-                }
-                index = index + layoutGroup.getNumberOfColumns();
-                if( x < layoutGroups.size()) {
-                    System.out.print(" |  ");
-                }
-                x++;
-            }
-            System.out.println("\n");
-        }     
+        //To print the seat
+        application.printSeat(seatLayout, seats, layoutGroups);
         
 //        System.out.println(" <====== Select seat ====> ");
 //        System.out.println("Enter seat count : ");
@@ -168,6 +140,46 @@ public class Application {
             seatColumnIndex = seatColumnIndex + layoutGroup.getNumberOfColumns();
         }
         return seatLayoutGroups;
+    }
+    
+    /**
+     * To print the seat.
+     * 
+     * @param seatLayout
+     * @param seats
+     * @param layoutGroups 
+     */
+    private void printSeat(SeatLayout seatLayout, Seat[][] seats, List<LayoutGroup> layoutGroups) {
+        
+        System.out.println(" <======= Available seats ========>" );
+
+        for (int i = 0; i <  seatLayout.getRows(); i++) {
+            for (int j = 0; j < seatLayout.getColumns(); j++) {
+
+                System.out.print(seats[i] [j].getName() + " ");
+            }
+            System.out.println("\n");
+        }
+
+        System.out.println(" <======= Available seats by group ========>" );
+        
+        for(int i = 0; i < seatLayout.getRows(); i++) {
+
+            int index = 0;
+            int x = 1;
+            for(LayoutGroup layoutGroup: layoutGroups) {
+//                    System.out.print(layoutGroup.getName() + " ");
+                for(int j = index; j < index + layoutGroup.getNumberOfColumns(); j++) {
+                    System.out.print(seats[i] [j].getName() + " ");
+                }
+                index = index + layoutGroup.getNumberOfColumns();
+                if( x < layoutGroups.size()) {
+                    System.out.print(" |  ");
+                }
+                x++;
+            }
+            System.out.println("\n");
+        } 
     }
     
 }
