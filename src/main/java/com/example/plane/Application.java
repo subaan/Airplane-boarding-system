@@ -7,11 +7,15 @@ package com.example.plane;
 
 import com.example.plane.domain.Seat;
 import com.example.plane.domain.SeatLayout;
+import com.example.plane.domain.LayoutGroup;
 import com.example.plane.domain.SeatLayoutGroup;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import javafx.print.Collation;
 
 /**
  *
@@ -26,18 +30,44 @@ public class Application {
         
         
         SeatLayout seatLayout = application.designPlaneSeatLayout(input);
-        List<SeatLayoutGroup> setLayoutGroups = application.groupingPlaneSeatLayout(input, seatLayout);
-        Seat[][] seats = application.designPlaneSeats(seatLayout, setLayoutGroups);
-        
-        System.out.println(" <======= Available seats ========>" +seats);
+        List<LayoutGroup> layoutGroups = application.groupingPlaneSeatLayout(input, seatLayout);
+        Seat[][] seats = application.designPlaneSeats(seatLayout, layoutGroups);
+        List<SeatLayoutGroup> seatLayoutGroups = application.seatGrouping(seatLayout, layoutGroups, seats);
 
-        for (int i = 0; i < seatLayout.getRows(); i++) {
+        
+        System.out.println(" <======= Available seats ========>" );
+
+        for (int i = 0; i <  seatLayout.getRows(); i++) {
             for (int j = 0; j < seatLayout.getColumns(); j++) {
 
                 System.out.print(seats[i] [j].getName() + " ");
             }
             System.out.println("\n");
         }
+
+        System.out.println(" <======= Available seats by group ========>" );
+        
+        for(int i = 0; i < seatLayout.getRows(); i++) {
+
+            int index = 0;
+            int x = 1;
+            for(LayoutGroup layoutGroup: layoutGroups) {
+//                    System.out.print(layoutGroup.getName() + " ");
+                for(int j = index; j < index + layoutGroup.getNumberOfColumns(); j++) {
+                    System.out.print(seats[i] [j].getName() + " ");
+                }
+                index = index + layoutGroup.getNumberOfColumns();
+                if( x < layoutGroups.size()) {
+                    System.out.print(" |  ");
+                }
+                x++;
+            }
+            System.out.println("\n");
+        }     
+        
+//        System.out.println(" <====== Select seat ====> ");
+//        System.out.println("Enter seat count : ");
+//        int seatCount = input.nextInt();
 
     }
     
@@ -68,32 +98,32 @@ public class Application {
      * @param seatLayout the seat Layout.
      * @param inScanner the input scanner.
      */
-    private List<SeatLayoutGroup> groupingPlaneSeatLayout(Scanner input, SeatLayout seatLayout) {
+    private List<LayoutGroup> groupingPlaneSeatLayout(Scanner input, SeatLayout seatLayout) {
         
         System.out.println("Group your seat layout: ");
         System.out.println("Enter the total number of groups in layout : ");
         int numberOfgroups = input.nextInt();
         
-        List<SeatLayoutGroup> seatLayoutGroups = new ArrayList<SeatLayoutGroup>();
+        List<LayoutGroup> layoutGroups = new ArrayList<>();
         for(int i = 0; i < numberOfgroups; i++) {
             System.out.println("Enter the group  " + i + " columns :");
             int numberOfColumns = input.nextInt();
-            SeatLayoutGroup seatLayoutGroup = new SeatLayoutGroup();
+            LayoutGroup seatLayoutGroup = new LayoutGroup();
             seatLayoutGroup.setName("Group"+i);
             seatLayoutGroup.setNumberOfColumns(numberOfColumns);
             seatLayoutGroup.setSeatLayout(seatLayout);
-            seatLayoutGroups.add(seatLayoutGroup);
+            layoutGroups.add(seatLayoutGroup);
         }
-        return seatLayoutGroups;
+        return layoutGroups;
     }
     
     /**
      * To design plane seat. 
      * @param seatLayout the seat layout.
-     * @param seatLayoutGroups the seat layout groups.
+     * @param layoutGroups the seat layout groups.
      * @return the designPlaneSeats.
      */
-    private Seat[][] designPlaneSeats(SeatLayout seatLayout, List<SeatLayoutGroup> seatLayoutGroups) {
+    private Seat[][] designPlaneSeats(SeatLayout seatLayout, List<LayoutGroup> layoutGroups) {
         int rows = seatLayout.getRows();
         int columns = seatLayout.getColumns();
         Seat[][] seats = new Seat[rows][columns];
@@ -113,6 +143,31 @@ public class Application {
             
         }
         return seats;
+    }
+    
+    /**
+     * To grouping the plan seats. 
+     * @param seatLayout the seat layout.
+     * @param layoutGroups the seat layout groups.
+     * @param seats the seats.
+     * @return the designPlaneSeats.
+     */
+    private List<SeatLayoutGroup> seatGrouping(SeatLayout seatLayout, List<LayoutGroup> layoutGroups, Seat[][] seats) {
+        List<SeatLayoutGroup> seatLayoutGroups = new ArrayList<>();
+        int seatColumnIndex = 0;
+        for (LayoutGroup layoutGroup: layoutGroups) {
+            System.out.println("layoutGroup: "+layoutGroup.getNumberOfColumns());
+            for(int i = 0; i < seatLayout.getRows(); i++) {
+                for(int j = seatColumnIndex; j < seatColumnIndex + layoutGroup.getNumberOfColumns(); j++) {
+                    SeatLayoutGroup seatLayoutGroup = new SeatLayoutGroup();
+                    seatLayoutGroup.setLayoutGroup(layoutGroup);
+                    seatLayoutGroup.setSeat(seats[i][j]);
+                    seatLayoutGroups.add(seatLayoutGroup);
+                }   
+            }
+            seatColumnIndex = seatColumnIndex + layoutGroup.getNumberOfColumns();
+        }
+        return seatLayoutGroups;
     }
     
 }

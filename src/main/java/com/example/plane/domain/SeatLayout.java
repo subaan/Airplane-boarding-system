@@ -26,7 +26,7 @@ public class SeatLayout {
     private Plane plane;
     
     /* The seat layoput groups. */
-    private List<SeatLayoutGroup> seatLayoutGroups;
+    private List<LayoutGroup> seatLayoutGroups;
 
     /**
      * @return the name
@@ -87,14 +87,14 @@ public class SeatLayout {
     /**
      * @return the seatLayoutGroups
      */
-    public List<SeatLayoutGroup> getSeatLayoutGroups() {
+    public List<LayoutGroup> getSeatLayoutGroups() {
         return seatLayoutGroups;
     }
 
     /**
      * @param seatLayoutGroups the seatLayoutGroups to set
      */
-    public void setSeatLayoutGroups(List<SeatLayoutGroup> seatLayoutGroups) {
+    public void setSeatLayoutGroups(List<LayoutGroup> seatLayoutGroups) {
         this.seatLayoutGroups = seatLayoutGroups;
     }
    

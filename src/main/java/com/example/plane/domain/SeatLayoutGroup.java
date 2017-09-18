@@ -11,55 +11,38 @@ package com.example.plane.domain;
  */
 public class SeatLayoutGroup {
     
-    /* The name of the group. */
-    private String name;
+    /* The plane seat. */
+    private Seat seat;
     
-    /* The seat layout */
-    private SeatLayout seatLayout;
-    
-    /* The number of columns. */
-    private int numberOfColumns;
+    /* The layout group. */
+    private LayoutGroup layoutGroup;
 
     /**
-     * @return the name
+     * @return the seat
      */
-    public String getName() {
-        return name;
+    public Seat getSeat() {
+        return seat;
     }
 
     /**
-     * @param name the name to set
+     * @param seat the seat to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setSeat(Seat seat) {
+        this.seat = seat;
     }
 
     /**
-     * @return the seatLayout
+     * @return the layoutGroup
      */
-    public SeatLayout getSeatLayout() {
-        return seatLayout;
+    public LayoutGroup getLayoutGroup() {
+        return layoutGroup;
     }
 
     /**
-     * @param seatLayout the seatLayout to set
+     * @param layoutGroup the layoutGroup to set
      */
-    public void setSeatLayout(SeatLayout seatLayout) {
-        this.seatLayout = seatLayout;
+    public void setLayoutGroup(LayoutGroup layoutGroup) {
+        this.layoutGroup = layoutGroup;
     }
 
-    /**
-     * @return the numberOfColumns
-     */
-    public int getNumberOfColumns() {
-        return numberOfColumns;
-    }
-
-    /**
-     * @param numberOfColumns the numberOfColumns to set
-     */
-    public void setNumberOfColumns(int numberOfColumns) {
-        this.numberOfColumns = numberOfColumns;
-    }
-  
 }
